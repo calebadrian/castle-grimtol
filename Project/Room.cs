@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 namespace CastleGrimtol.Project
@@ -13,6 +14,12 @@ namespace CastleGrimtol.Project
         public void UseItem(Item item)
         {
 
+        }
+
+        public Room(GameSetup gs, int roomCount)
+        {
+            Random rand = new Random();
+            Name = gs.RoomNames[rand.Next(0, roomCount)];
         }
     }
 }
