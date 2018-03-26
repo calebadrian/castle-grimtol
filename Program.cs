@@ -30,14 +30,26 @@ namespace CastleGrimtol
             bool valid = false;
             while (!valid)
             {
-                Console.WriteLine($"How many rooms does Castle Grimtol have this time {player.Name}?");
+                Console.WriteLine($"Is the Castle 5x5, 6x6, 7x7, or 8x8 {player.Name}?");
+                Console.WriteLine("Just type 5, 6, 7, or 8 to choose!");
                 string roomCountString = Console.ReadLine();
                 int roomCount;
                 if (Int32.TryParse(roomCountString, out roomCount))
                 {
+                    if (roomCount < 5 || roomCount > 8)
+                    {
+                        continue;
+                    }
                     Game currentGame = new Game(player, roomCount, gs);
-                    for (int i = 0; i < currentGame.Rooms.Count; i++){
-                        Console.WriteLine($"Room Name: {currentGame.Rooms[i].Name}");
+                    Console.Clear();
+                    bool playing = true;
+                    while (playing)
+                    {
+                        Console.WriteLine($"You are currently in the {currentGame.CurrentRoom.Name}");
+                        Console.WriteLine("What would you like to do?");
+                        string choice = Console.ReadLine().ToLower();
+                        playing = currentGame.Action(choice, player);
+                        valid = true;
                     }
                     valid = true;
                 }

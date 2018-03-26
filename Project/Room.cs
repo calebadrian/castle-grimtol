@@ -18,8 +18,7 @@ namespace CastleGrimtol.Project
 
         public Room(GameSetup gs, int roomCount)
         {
-            Random rand = new Random();
-            Name = gs.RoomNames[rand.Next(0, roomCount)];
+            Name = gs.RoomNames[roomCount];
         }
     }
 }
