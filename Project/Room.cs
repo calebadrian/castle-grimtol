@@ -19,6 +19,7 @@ namespace CastleGrimtol.Project
         public Room(GameSetup gs, int roomCount)
         {
             Name = gs.RoomNames[roomCount];
+            Description = gs.RoomDescriptions[roomCount];
         }
     }
 }

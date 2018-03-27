@@ -18,6 +18,15 @@ namespace CastleGrimtol
                     string line = "";
                     while ((line = sr.ReadLine()) != null)
                     {
+                        switch (i)
+                        {
+                            case 0:
+                                gs.RoomDescriptions.Add(line);
+                                break;
+                            case 1:
+                                gs.RoomNames.Add(line);
+                                break;
+                        }
                         gs.RoomNames.Add(line);
                     }
                 }
@@ -45,13 +54,28 @@ namespace CastleGrimtol
                     bool playing = true;
                     while (playing)
                     {
-                        Console.WriteLine($"You are currently in the {currentGame.CurrentRoom.Name}");
-                        Console.WriteLine("What would you like to do?");
+                        Console.WriteLine(currentGame.CurrentRoom.Description);
+                        Console.WriteLine($"What would you like to do {player.Name}?");
                         string choice = Console.ReadLine().ToLower();
-                        playing = currentGame.Action(choice, player);
-                        valid = true;
+                        bool won = currentGame.Action(choice, player);
+                        if (won)
+                        {
+                            Console.WriteLine("You successfully navigated the castle and came out relatively unscathed!  Lucky you! ...this time");
+                            Console.WriteLine("Would you like to play again?");
+                            string yorn = Console.ReadLine().ToLower();
+                            if (yorn[0] != 'n')
+                            {
+                                playing = false;
+                            }
+                            else
+                            {
+                                valid = true;
+                            }
+                        } else if (!won && choice == "quit"){
+                            Console.WriteLine("Thanks for Playing!");
+                            valid = true;
+                        }
                     }
-                    valid = true;
                 }
                 else
                 {

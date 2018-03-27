@@ -7,8 +7,11 @@ namespace CastleGrimtol.Project{
 
         public List<string> RoomNames { get; set; }
 
+        public List<string> RoomDescriptions { get; set; }
+
         public GameSetup(){
             RoomNames = new List<string>();
+            RoomDescriptions = new List<string>();
         }
     }
 }

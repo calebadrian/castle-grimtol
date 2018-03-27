@@ -7,6 +7,8 @@ namespace CastleGrimtol.Project
     {
         public Room CurrentRoom { get; set; }
 
+        public Room EndingRoom { get; set; }
+
         public Player CurrentPlayer { get; set; }
 
         public Room[,] Rooms { get; set; }
@@ -29,27 +31,42 @@ namespace CastleGrimtol.Project
         public void GoLeft()
         {
             List<int> indexes = IndexOfCurrentRoom();
-            Console.WriteLine(indexes[0] + "  " + indexes[1]);
+            if (indexes[1] == 0){
+                Console.WriteLine("You run into a wall and go nowhere");
+                return;
+            }
             CurrentRoom = Rooms[indexes[0], indexes[1] - 1];
         }
 
         public void GoRight()
         {
             List<int> indexes = IndexOfCurrentRoom();
+            if (indexes[1] == Rooms.GetLength(0) - 1){
+                Console.WriteLine("You run into a wall and go nowhere");
+                return;
+            }
             CurrentRoom = Rooms[indexes[0], indexes[1] + 1];
         }
 
         public void GoUp()
         {
             List<int> indexes = IndexOfCurrentRoom();
+            if (indexes[0] == 0){
+                Console.WriteLine("You run into a wall and go nowhere");
+                return;
+            }
             CurrentRoom = Rooms[indexes[0] - 1, indexes[1]];
         }
 
-        public List<int> IndexOfCurrentRoom(){
+        public List<int> IndexOfCurrentRoom()
+        {
             List<int> temp = new List<int>();
-            for (int i = 0; i < Rooms.GetLength(0); i++){
-                for (int j = 0; j < Rooms.GetLength(1); j++){
-                    if (Rooms[i, j].Equals(CurrentRoom)){
+            for (int i = 0; i < Rooms.GetLength(0); i++)
+            {
+                for (int j = 0; j < Rooms.GetLength(1); j++)
+                {
+                    if (Rooms[i, j].Equals(CurrentRoom))
+                    {
                         temp.Add(i);
                         temp.Add(j);
                         return temp;
@@ -57,6 +74,18 @@ namespace CastleGrimtol.Project
                 }
             }
             return temp;
+        }
+
+        public bool CheckWin()
+        {
+            if (CurrentRoom.Equals(EndingRoom))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool Action(string choice, Player player)
@@ -67,7 +96,7 @@ namespace CastleGrimtol.Project
                 case "left":
                     Console.WriteLine("Go Left");
                     GoLeft();
-                    return true;
+                    return CheckWin();
                 case "right":
                     Console.WriteLine("Go Right");
                     GoRight();
@@ -108,6 +137,11 @@ namespace CastleGrimtol.Project
             Random rand = new Random();
             for (int i = 0; i < loop; i++)
             {
+                if (i == 0)
+                {
+                    Rooms[roomCount - 1, (roomCount - 1) / 2] = new Room(gs, i);
+                    continue;
+                }
                 bool valid = false;
                 while (!valid)
                 {
@@ -120,7 +154,22 @@ namespace CastleGrimtol.Project
                     }
                 }
             }
-            CurrentRoom = Rooms[roomCount - 1, 2];
+            CurrentRoom = Rooms[roomCount - 1, (roomCount - 1) / 2];
+            bool notStart = true;
+            while (notStart)
+            {
+                int endY = rand.Next(0, 5);
+                int endX = rand.Next(0, 5);
+                if (Rooms[endY, endX].Equals(CurrentRoom))
+                {
+                    continue;
+                }
+                else
+                {
+                    EndingRoom = Rooms[endY, endX];
+                    notStart = false;
+                }
+            }
         }
     }
 }
