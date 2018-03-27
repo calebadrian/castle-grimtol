@@ -1,26 +1,39 @@
 Entrance
-B
-C
-D
-E
-F
-G
-H
-I
-J
-K
-L
-M
-N
-O
-P
-Q
-R
-S
-T
-U
-V
-W
-X
-Y
-Z
+Abandoned Room
+Balcony
+Ballroom
+Bedroom
+Bloody Room
+Catacombs
+Chapel
+Charred Room
+Chasm
+Conservatory
+Creaky Hallway
+Crypt
+Dining Room
+Dusty Hallway
+Foyer
+Furnace Room
+Gallery
+Game Room
+Gardens
+Graveyard
+Gymnasium
+Junk Room
+Kitchen
+Larder
+Library
+Master Bedroom
+Operating Laboratory
+Organ Room
+Patio
+Pentagram Chamber
+Research Laboratory
+Servants' Quarters
+Statuary Corridor
+Storeroom
+Tower
+Underground Lake
+Vault
+Beer Cellar

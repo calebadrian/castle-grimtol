@@ -32,9 +32,15 @@ namespace CastleGrimtol.Project
                         switch (i)
                         {
                             case 0:
-                                gs.RoomDescriptions.Add(line);
+                                gs.ItemDescriptions.Add(line);
                                 break;
                             case 1:
+                                gs.ItemNames.Add(line);
+                                break;
+                            case 2:
+                                gs.RoomDescriptions.Add(line);
+                                break;
+                            case 3:
                                 gs.RoomNames.Add(line);
                                 break;
                         }
@@ -249,6 +255,16 @@ namespace CastleGrimtol.Project
             CurrentRoom = Rooms[indexes[0] - 1, indexes[1]];
         }
 
+        public void GoDown()
+        {
+            List<int> indexes = IndexOfCurrentRoom();
+            if (indexes[0] == Rooms.GetLength(0) - 1){
+                Console.WriteLine("You run into a wall and go nowhere");
+                return;
+            }
+            CurrentRoom = Rooms[indexes[0] + 1, indexes[1]];
+        }
+
         public List<int> IndexOfCurrentRoom()
         {
             List<int> temp = new List<int>();
@@ -284,17 +300,21 @@ namespace CastleGrimtol.Project
             Console.Clear();
             switch (choice)
             {
-                case "left":
+                case "go west":
                     Console.WriteLine("Go Left");
                     GoLeft();
                     return CheckWin();
-                case "right":
+                case "go east":
                     Console.WriteLine("Go Right");
                     GoRight();
                     return CheckWin();
-                case "up":
+                case "go north":
                     Console.WriteLine("Go Up");
                     GoUp();
+                    return CheckWin();
+                case "go south":
+                    Console.WriteLine("Go Down");
+                    GoDown();
                     return CheckWin();
                 case "use":
                     Console.WriteLine("Use your Item");

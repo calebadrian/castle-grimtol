@@ -20,6 +20,11 @@ namespace CastleGrimtol.Project
         {
             Name = gs.RoomNames[roomCount];
             Description = gs.RoomDescriptions[roomCount];
+            Items = new List<Item>();
+            if (gs.ItemNames[roomCount] != "")
+            {
+                Items.Add(new Item(gs.ItemNames[roomCount], gs.ItemDescriptions[roomCount]));
+            }
         }
     }
 }
