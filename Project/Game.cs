@@ -306,7 +306,8 @@ namespace CastleGrimtol.Project
             if (choice == "quit")
             {
                 Console.WriteLine("Thanks for Playing!");
-                return CheckWin();
+                System.Environment.Exit(1);
+                return false;
             }
             if (CurrentRoom.Items.Count > 0)
             {
