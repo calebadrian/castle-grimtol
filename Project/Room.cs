@@ -16,6 +16,11 @@ namespace CastleGrimtol.Project
 
         }
 
+        public void RemoveItem(Item item)
+        {
+            Items.Remove(item);
+        }
+
         public Room(GameSetup gs, int roomCount)
         {
             Name = gs.RoomNames[roomCount];

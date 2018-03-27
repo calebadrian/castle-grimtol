@@ -129,7 +129,7 @@ namespace CastleGrimtol.Project
                     Console.WriteLine("Thanks for Playing!");
                     playing = false;
                 }
-                bool won = Action(choice, CurrentPlayer);
+                bool won = Action(choice);
                 if (won)
                 {
                     Console.WriteLine("You successfully navigated the castle and came out relatively unscathed!  Lucky you! ...this time");
@@ -258,7 +258,8 @@ namespace CastleGrimtol.Project
         public void GoDown()
         {
             List<int> indexes = IndexOfCurrentRoom();
-            if (indexes[0] == Rooms.GetLength(0) - 1){
+            if (indexes[0] == Rooms.GetLength(0) - 1)
+            {
                 Console.WriteLine("You run into a wall and go nowhere");
                 return;
             }
@@ -295,9 +296,17 @@ namespace CastleGrimtol.Project
             }
         }
 
-        public bool Action(string choice, Player player)
+        public bool Action(string choice)
         {
-            Console.Clear();
+            if (CurrentRoom.Items.Count > 0)
+            {
+                if (choice == "take " + CurrentRoom.Items[0].Name.ToLower())
+                {
+                    CurrentPlayer.TakeItem(CurrentRoom.Items[0]);
+                    CurrentRoom.RemoveItem(CurrentRoom.Items[0]);
+                    return CheckWin();
+                }
+            }
             switch (choice)
             {
                 case "go west":
@@ -319,13 +328,11 @@ namespace CastleGrimtol.Project
                 case "use":
                     Console.WriteLine("Use your Item");
                     return CheckWin();
-                case "take":
-                    Console.WriteLine("Take the Item");
-                    return CheckWin();
                 case "inventory":
-                    for (var i = 0; i < player.Inventory.Count; i++)
+                    for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
                     {
-                        Console.WriteLine($"{i + 1}. {player.Inventory[i].Name}");
+                        Console.WriteLine(CurrentPlayer.Inventory[i].Name);
+
                     }
                     return CheckWin();
                 case "help":

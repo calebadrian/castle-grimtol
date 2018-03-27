@@ -12,6 +12,11 @@ namespace CastleGrimtol.Project
 
         public List<Item> Inventory { get; set; }
 
+        public void TakeItem(Item item)
+        {
+            Inventory.Add(item);
+        }
+
         public Player(string name)
         {
             Score = 0;
