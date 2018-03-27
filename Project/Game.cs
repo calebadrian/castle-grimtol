@@ -431,6 +431,9 @@ This will reprint the description of the room for you
 ----------------------------------------------------------------------
 ");
                     return Action();
+                case "look":
+                    Console.WriteLine(CurrentRoom.Description);
+                    return Action();
                 default:
                     Console.WriteLine($"{choice} is not an option!");
                     return Action();
