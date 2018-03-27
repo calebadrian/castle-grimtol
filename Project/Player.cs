@@ -17,6 +17,11 @@ namespace CastleGrimtol.Project
             Inventory.Add(item);
         }
 
+        public void RemoveItem(Item item)
+        {
+            Inventory.Remove(item);
+        }
+
         public Player(string name)
         {
             Score = 0;

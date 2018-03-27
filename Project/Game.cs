@@ -80,8 +80,8 @@ namespace CastleGrimtol.Project
                         bool roomValid = false;
                         while (!roomValid)
                         {
-                            var index1 = rand.Next(0, 5);
-                            var index2 = rand.Next(0, 5);
+                            var index1 = rand.Next(0, roomCount);
+                            var index2 = rand.Next(0, roomCount);
                             if (Rooms[index1, index2] == null)
                             {
                                 Rooms[index1, index2] = new Room(gs, i);
@@ -93,8 +93,8 @@ namespace CastleGrimtol.Project
                     bool notStart = true;
                     while (notStart)
                     {
-                        int endY = rand.Next(0, 5);
-                        int endX = rand.Next(0, 5);
+                        int endY = rand.Next(0, roomCount);
+                        int endX = rand.Next(0, roomCount);
                         if (Rooms[endY, endX].Equals(CurrentRoom))
                         {
                             continue;
@@ -121,15 +121,10 @@ namespace CastleGrimtol.Project
             bool playing = true;
             while (playing)
             {
+                Console.Clear();
                 Console.WriteLine(CurrentRoom.Description);
                 Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
-                string choice = Console.ReadLine().ToLower();
-                if (choice == "quit")
-                {
-                    Console.WriteLine("Thanks for Playing!");
-                    playing = false;
-                }
-                bool won = Action(choice);
+                bool won = Action();
                 if (won)
                 {
                     Console.WriteLine("You successfully navigated the castle and came out relatively unscathed!  Lucky you! ...this time");
@@ -181,8 +176,8 @@ namespace CastleGrimtol.Project
                         bool roomValid = false;
                         while (!roomValid)
                         {
-                            var index1 = rand.Next(0, 5);
-                            var index2 = rand.Next(0, 5);
+                            var index1 = rand.Next(0, roomCount);
+                            var index2 = rand.Next(0, roomCount);
                             if (Rooms[index1, index2] == null)
                             {
                                 Rooms[index1, index2] = new Room(GameSetup, i);
@@ -194,8 +189,8 @@ namespace CastleGrimtol.Project
                     bool notStart = true;
                     while (notStart)
                     {
-                        int endY = rand.Next(0, 5);
-                        int endX = rand.Next(0, 5);
+                        int endY = rand.Next(0, roomCount);
+                        int endX = rand.Next(0, roomCount);
                         if (Rooms[endY, endX].Equals(CurrentRoom))
                         {
                             continue;
@@ -296,15 +291,35 @@ namespace CastleGrimtol.Project
             }
         }
 
-        public bool Action(string choice)
+        public bool Action()
         {
+            string choice = Console.ReadLine().ToLower();
+            if (choice == "quit")
+            {
+                Console.WriteLine("Thanks for Playing!");
+                return CheckWin();
+            }
             if (CurrentRoom.Items.Count > 0)
             {
                 if (choice == "take " + CurrentRoom.Items[0].Name.ToLower())
                 {
+                    Console.WriteLine($"Took {CurrentRoom.Items[0].Name}");
                     CurrentPlayer.TakeItem(CurrentRoom.Items[0]);
                     CurrentRoom.RemoveItem(CurrentRoom.Items[0]);
-                    return CheckWin();
+                    return Action();
+                }
+            }
+            if (CurrentPlayer.Inventory.Count > 0)
+            {
+                for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
+                {
+                    if (choice == "use " + CurrentPlayer.Inventory[i].Name.ToLower())
+                    {
+                        Console.WriteLine($"Used {CurrentPlayer.Inventory[i].Name}");
+                        CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
+                        CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
+                        return Action();
+                    }
                 }
             }
             switch (choice)
@@ -325,22 +340,19 @@ namespace CastleGrimtol.Project
                     Console.WriteLine("Go Down");
                     GoDown();
                     return CheckWin();
-                case "use":
-                    Console.WriteLine("Use your Item");
-                    return CheckWin();
                 case "inventory":
                     for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
                     {
                         Console.WriteLine(CurrentPlayer.Inventory[i].Name);
 
                     }
-                    return CheckWin();
+                    return Action();
                 case "help":
                     Console.WriteLine("left, right, up, use, take, help");
-                    return CheckWin();
+                    return Action();
                 default:
                     Console.WriteLine($"{choice} is not an option!");
-                    return CheckWin();
+                    return Action();
             }
         }
         public Game()
