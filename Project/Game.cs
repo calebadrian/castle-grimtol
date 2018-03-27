@@ -32,19 +32,31 @@ namespace CastleGrimtol.Project
                         switch (i)
                         {
                             case 0:
-                                gs.ItemDescriptions.Add(line);
+                                int damage;
+                                Int32.TryParse(line, out damage);
+                                gs.EnemyDamage.Add(damage);
                                 break;
                             case 1:
-                                gs.ItemNames.Add(line);
+                                int health;
+                                Int32.TryParse(line, out health);
+                                gs.EnemyHealth.Add(health);
                                 break;
                             case 2:
-                                gs.RoomDescriptions.Add(line);
+                                gs.EnemyNames.Add(line);
                                 break;
                             case 3:
+                                gs.ItemDescriptions.Add(line);
+                                break;
+                            case 4:
+                                gs.ItemNames.Add(line);
+                                break;
+                            case 5:
+                                gs.RoomDescriptions.Add(line);
+                                break;
+                            case 6:
                                 gs.RoomNames.Add(line);
                                 break;
                         }
-                        gs.RoomNames.Add(line);
                     }
                 }
             }
@@ -125,7 +137,7 @@ namespace CastleGrimtol.Project
                 Console.WriteLine(CurrentRoom.Description);
                 Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
                 bool won = Action();
-                if (won)
+                if (won && CurrentPlayer.Health > 0)
                 {
                     Console.WriteLine("You successfully navigated the castle and came out relatively unscathed!  Lucky you! ...this time");
                     Console.WriteLine("Would you like to play again?");
@@ -141,9 +153,21 @@ namespace CastleGrimtol.Project
                         playing = false;
                     }
                 }
-                else
+                else if (CurrentPlayer.Health < 0)
                 {
-
+                    Console.WriteLine("You Died!");
+                    Console.WriteLine("Would you like to play again?");
+                    string yorn = Console.ReadLine().ToLower();
+                    if (yorn[0] != 'n')
+                    {
+                        Reset();
+                        playing = true;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Thanks for Playing!");
+                        playing = false;
+                    }
                 }
             }
         }
@@ -330,22 +354,51 @@ namespace CastleGrimtol.Project
                     }
                 }
             }
+            if (CurrentRoom.Enemies.Count > 0)
+            {
+                for (int i = 0; i < CurrentRoom.Enemies.Count; i++)
+                {
+                    if (choice == "attack " + CurrentRoom.Enemies[i].Name.ToLower())
+                    {
+                        Console.WriteLine($"You defeated {CurrentRoom.Enemies[i].Name}");
+                        CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
+                        CurrentRoom.Enemies.Remove(CurrentRoom.Enemies[i]);
+                        return Action();
+                    }
+                }
+            }
             switch (choice)
             {
                 case "go west":
-                    Console.WriteLine("Go Left");
+                    if (CurrentRoom.Enemies.Count > 0)
+                    {
+                        Console.WriteLine("You can't leave while enemies are still in the room!");
+                        return Action();
+                    }
                     GoLeft();
                     return CheckWin();
                 case "go east":
-                    Console.WriteLine("Go Right");
+                    if (CurrentRoom.Enemies.Count > 0)
+                    {
+                        Console.WriteLine("You can't leave while enemies are still in the room!");
+                        return Action();
+                    }
                     GoRight();
                     return CheckWin();
                 case "go north":
-                    Console.WriteLine("Go Up");
+                    if (CurrentRoom.Enemies.Count > 0)
+                    {
+                        Console.WriteLine("You can't leave while enemies are still in the room!");
+                        return Action();
+                    }
                     GoUp();
                     return CheckWin();
                 case "go south":
-                    Console.WriteLine("Go Down");
+                    if (CurrentRoom.Enemies.Count > 0)
+                    {
+                        Console.WriteLine("You can't leave while enemies are still in the room!");
+                        return Action();
+                    }
                     GoDown();
                     return CheckWin();
                 case "inventory":
@@ -366,6 +419,9 @@ This will take whatever item you specify that is in the current room
 ----------------------------------------------------------------------
 use <item>
 This will use an item from your inventory and remove it
+----------------------------------------------------------------------
+attack <enemy>
+This will attack the enemy of your choosing in that room
 ----------------------------------------------------------------------
 inventory
 This will show all your items in your inventory currently
