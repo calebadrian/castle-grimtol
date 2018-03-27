@@ -335,12 +335,16 @@ namespace CastleGrimtol.Project
             }
             if (CurrentRoom.Items.Count > 0)
             {
-                if (choice == "take " + CurrentRoom.Items[0].Name.ToLower())
+                for (int i = 0; i < CurrentRoom.Items.Count; i++)
                 {
-                    Console.WriteLine($"Took {CurrentRoom.Items[0].Name}");
-                    CurrentPlayer.TakeItem(CurrentRoom.Items[0]);
-                    CurrentRoom.RemoveItem(CurrentRoom.Items[0]);
+                    if (choice == "take " + CurrentRoom.Items[i].Name.ToLower())
+                    {
+                    Console.WriteLine($"Took {CurrentRoom.Items[i].Name}");
+                    CurrentPlayer.TakeItem(CurrentRoom.Items[i]);
+                    CurrentRoom.RemoveItem(CurrentRoom.Items[i]);
                     return Action();
+                    }
+
                 }
             }
             if (CurrentPlayer.Inventory.Count > 0)
