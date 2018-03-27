@@ -214,7 +214,16 @@ namespace CastleGrimtol.Project
 
         public void UseItem(string itemName)
         {
-
+            Console.WriteLine($"Used {itemName.ToLower()}");
+            for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
+            {
+                if (CurrentPlayer.Inventory[i].Name == itemName)
+                {
+                    CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
+                    CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
+                    return;
+                }
+            }
         }
 
         public void GoLeft()
@@ -315,9 +324,7 @@ namespace CastleGrimtol.Project
                 {
                     if (choice == "use " + CurrentPlayer.Inventory[i].Name.ToLower())
                     {
-                        Console.WriteLine($"Used {CurrentPlayer.Inventory[i].Name}");
-                        CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
-                        CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
+                        UseItem(CurrentPlayer.Inventory[i].Name);
                         return Action();
                     }
                 }
@@ -348,7 +355,24 @@ namespace CastleGrimtol.Project
                     }
                     return Action();
                 case "help":
-                    Console.WriteLine("left, right, up, use, take, help");
+                    Console.WriteLine($@"
+----------------------------------------------------------------------
+go <direction>
+This will take you any of the four cardinal directions
+----------------------------------------------------------------------
+take <item>
+This will take whatever item you specify that is in the current room
+----------------------------------------------------------------------
+use <item>
+This will use an item from your inventory and remove it
+----------------------------------------------------------------------
+inventory
+This will show all your items in your inventory currently
+----------------------------------------------------------------------
+look
+This will reprint the description of the room for you
+----------------------------------------------------------------------
+");
                     return Action();
                 default:
                     Console.WriteLine($"{choice} is not an option!");
