@@ -383,6 +383,17 @@ namespace CastleGrimtol.Project
                                     Console.WriteLine($"{CurrentPlayer.Inventory[j].Name.ToLower()} | {CurrentPlayer.Inventory[j].Description} | {CurrentPlayer.Inventory[j].Damage}");
                                 }
                                 string weaponChoice = Console.ReadLine().ToLower();
+                                if (weaponChoice == "orb" && CurrentRoom.Enemies[i].Name == "The Reaper")
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
+                                    Console.WriteLine("---------------------------------------------------------------------------------");
+                                    Console.WriteLine(CurrentRoom.Description);
+                                    Console.WriteLine("---------------------------------------------------------------------------------");
+                                    Console.WriteLine("The orb magically defeats the reaper and he dissapears!");
+                                    CurrentRoom.Enemies[i].Health = 0;
+                                    break;
+                                }
                                 for (var k = 0; k < CurrentPlayer.Inventory.Count; k++)
                                 {
                                     if (CurrentPlayer.Inventory[k].Name.ToLower() == weaponChoice)
