@@ -134,11 +134,15 @@ namespace CastleGrimtol.Project
             while (playing)
             {
                 Console.Clear();
+                Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
+                Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine(CurrentRoom.Description);
+                Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
                 bool won = Action();
                 if (won && CurrentPlayer.Health > 0)
                 {
+                    Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                     Console.WriteLine("You successfully navigated the castle and came out relatively unscathed!  Lucky you! ...this time");
                     Console.WriteLine("Would you like to play again?");
                     string yorn = Console.ReadLine().ToLower();
@@ -339,10 +343,10 @@ namespace CastleGrimtol.Project
                 {
                     if (choice == "take " + CurrentRoom.Items[i].Name.ToLower())
                     {
-                    Console.WriteLine($"Took {CurrentRoom.Items[i].Name}");
-                    CurrentPlayer.TakeItem(CurrentRoom.Items[i]);
-                    CurrentRoom.RemoveItem(CurrentRoom.Items[i]);
-                    return Action();
+                        Console.WriteLine($"Took {CurrentRoom.Items[i].Name}");
+                        CurrentPlayer.TakeItem(CurrentRoom.Items[i]);
+                        CurrentRoom.RemoveItem(CurrentRoom.Items[i]);
+                        return Action();
                     }
 
                 }
@@ -364,9 +368,49 @@ namespace CastleGrimtol.Project
                 {
                     if (choice == "attack " + CurrentRoom.Enemies[i].Name.ToLower())
                     {
-                        Console.WriteLine($"You defeated {CurrentRoom.Enemies[i].Name}");
-                        CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
+                        while (CurrentRoom.Enemies[i].Health > 0)
+                        {
+                            if (CurrentPlayer.Inventory.Count > 0)
+                            {
+                                Console.WriteLine("With which item?");
+                                for (var j = 0; j < CurrentPlayer.Inventory.Count; j++)
+                                {
+                                    Console.WriteLine($"{CurrentPlayer.Inventory[j].Name.ToLower()} | {CurrentPlayer.Inventory[j].Description} | {CurrentPlayer.Inventory[j].Damage}");
+                                }
+                                string weaponChoice = Console.ReadLine().ToLower();
+                                for (var k = 0; k < CurrentPlayer.Inventory.Count; k++)
+                                {
+                                    if (CurrentPlayer.Inventory[k].Name.ToLower() == weaponChoice)
+                                    {
+                                        CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
+                                        CurrentRoom.Enemies[i].Health -= CurrentPlayer.Inventory[k].Damage;
+                                        Console.Clear();
+                                        Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
+                                        Console.WriteLine("---------------------------------------------------------------------------------");
+                                        Console.WriteLine(CurrentRoom.Description);
+                                        Console.WriteLine("---------------------------------------------------------------------------------");
+                                        Console.WriteLine($"You attack with the {CurrentPlayer.Inventory[k].Name.ToLower()} and do {CurrentPlayer.Inventory[k].Damage} damage.");
+                                        Console.WriteLine($"{CurrentRoom.Enemies[i].Name.ToLower()} health: {CurrentRoom.Enemies[i].Health}");
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
+                                CurrentRoom.Enemies[i].Health -= 5;
+                                Console.Clear();
+                                Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
+                                Console.WriteLine("---------------------------------------------------------------------------------");
+                                Console.WriteLine(CurrentRoom.Description);
+                                Console.WriteLine("---------------------------------------------------------------------------------");
+                                Console.WriteLine($"You flail at {CurrentRoom.Enemies[i].Name.ToLower()} with your fists but it only does 5 damage!");
+                                Console.WriteLine($"{CurrentRoom.Enemies[i].Name.ToLower()} health: {CurrentRoom.Enemies[i].Health}");
+                            }
+                        }
+                        Console.WriteLine($"You defeated {CurrentRoom.Enemies[i].Name}!");
                         CurrentRoom.Enemies.Remove(CurrentRoom.Enemies[i]);
+                        Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
                         return Action();
                     }
                 }
@@ -406,33 +450,72 @@ namespace CastleGrimtol.Project
                     GoDown();
                     return CheckWin();
                 case "inventory":
-                    for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
+                    if (CurrentPlayer.Inventory.Count > 0)
                     {
-                        Console.WriteLine(CurrentPlayer.Inventory[i].Name);
+                        for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
+                        {
+                            Console.WriteLine(CurrentPlayer.Inventory[i].Name.ToLower());
 
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There is nothing in your inventory");
+                    }
+                    return Action();
+                case "items":
+                    if (CurrentRoom.Items.Count > 0)
+                    {
+                        for (int i = 0; i < CurrentRoom.Items.Count; i++)
+                        {
+                            Console.WriteLine(CurrentRoom.Items[i].Name.ToLower());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no items in this room!");
+                    }
+                    return Action();
+                case "enemies":
+                    if (CurrentRoom.Enemies.Count > 0)
+                    {
+                        for (int i = 0; i < CurrentRoom.Enemies.Count; i++)
+                        {
+                            Console.WriteLine(CurrentRoom.Enemies[i].Name.ToLower());
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("There are no enemies in this room!");
                     }
                     return Action();
                 case "help":
                     Console.WriteLine($@"
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 go <direction>
 This will take you any of the four cardinal directions
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 take <item>
 This will take whatever item you specify that is in the current room
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 use <item>
 This will use an item from your inventory and remove it
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 attack <enemy>
 This will attack the enemy of your choosing in that room
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 inventory
 This will show all your items in your inventory currently
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
+items
+This will show you all the items avaliable to pick up in the current room
+--------------------------------------------------------------------------
+enemies
+This will show you all the enemies that are in the room
+--------------------------------------------------------------------------
 look
 This will reprint the description of the room for you
-----------------------------------------------------------------------
+--------------------------------------------------------------------------
 ");
                     return Action();
                 case "look":
