@@ -157,8 +157,10 @@ namespace CastleGrimtol.Project
                         playing = false;
                     }
                 }
-                else if (CurrentPlayer.Health < 0)
+                else if (CurrentPlayer.Health <= 0)
                 {
+                    Console.Clear();
+                    Console.WriteLine($"{CurrentRoom.Enemies[0].Name} has Defeated you!");
                     Console.WriteLine("You Died!");
                     Console.WriteLine("Would you like to play again?");
                     string yorn = Console.ReadLine().ToLower();
@@ -178,9 +180,12 @@ namespace CastleGrimtol.Project
 
         public void Reset()
         {
+            CurrentPlayer.Health = 100;
+            CurrentPlayer.Inventory = new List<Item>();
             bool valid = false;
             while (!valid)
             {
+                Console.Clear();
                 Console.WriteLine($"Is the Castle 5x5, 6x6, 7x7, or 8x8 {CurrentPlayer.Name}?");
                 Console.WriteLine("Just type 5, 6, 7, or 8 to choose!");
                 string roomCountString = Console.ReadLine();
@@ -384,6 +389,10 @@ namespace CastleGrimtol.Project
                                     {
                                         CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
                                         CurrentRoom.Enemies[i].Health -= CurrentPlayer.Inventory[k].Damage;
+                                        if (CurrentPlayer.Health <= 0)
+                                        {
+                                            return false;
+                                        }
                                         Console.Clear();
                                         Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                                         Console.WriteLine("---------------------------------------------------------------------------------");
@@ -468,7 +477,7 @@ namespace CastleGrimtol.Project
                     {
                         for (int i = 0; i < CurrentRoom.Items.Count; i++)
                         {
-                            Console.WriteLine(CurrentRoom.Items[i].Name.ToLower());
+                            Console.WriteLine($"{CurrentRoom.Items[i].Name.ToLower()} | {CurrentRoom.Items[i].Description.ToLower()} | {CurrentRoom.Items[i].Damage}");
                         }
                     }
                     else
@@ -481,7 +490,7 @@ namespace CastleGrimtol.Project
                     {
                         for (int i = 0; i < CurrentRoom.Enemies.Count; i++)
                         {
-                            Console.WriteLine(CurrentRoom.Enemies[i].Name.ToLower());
+                            Console.WriteLine($"{CurrentRoom.Enemies[i].Name.ToLower()} | {CurrentRoom.Enemies[i].Health} | {CurrentRoom.Enemies[i].DamageDone}");
                         }
                     }
                     else
