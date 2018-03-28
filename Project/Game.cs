@@ -348,6 +348,11 @@ namespace CastleGrimtol.Project
                 {
                     if (choice == "take " + CurrentRoom.Items[i].Name.ToLower())
                     {
+                        if (CurrentRoom.Items[i].Name.ToLower() == "jar")
+                        {
+                            CurrentPlayer.Health = 0;
+                            return false;
+                        }
                         Console.WriteLine($"Took {CurrentRoom.Items[i].Name}");
                         CurrentPlayer.TakeItem(CurrentRoom.Items[i]);
                         CurrentRoom.RemoveItem(CurrentRoom.Items[i]);
