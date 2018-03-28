@@ -37,3 +37,21 @@ Tower
 Underground Lake
 Vault
 Beer Cellar
+Arsenal
+Bathroom
+Cave
+Drawing Room
+Dungeon
+Laundry
+Locket Room
+Menagerie
+Nursery
+Panic Room
+Rookery
+Sewing Room
+Solarium
+Storm Cellar
+Study
+Theater
+Tree House
+Widow's Walk

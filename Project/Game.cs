@@ -192,7 +192,7 @@ namespace CastleGrimtol.Project
                 int roomCount;
                 if (Int32.TryParse(roomCountString, out roomCount))
                 {
-                    if (roomCount < 5 || roomCount > 6)
+                    if (roomCount < 5 || roomCount > 8)
                     {
                         continue;
                     }
