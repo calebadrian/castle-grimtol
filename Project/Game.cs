@@ -45,15 +45,20 @@ namespace CastleGrimtol.Project
                                 gs.EnemyNames.Add(line);
                                 break;
                             case 3:
-                                gs.ItemDescriptions.Add(line);
+                                int damageWeapon;
+                                Int32.TryParse(line, out damageWeapon);
+                                gs.ItemDamages.Add(damageWeapon);
                                 break;
                             case 4:
-                                gs.ItemNames.Add(line);
+                                gs.ItemDescriptions.Add(line);
                                 break;
                             case 5:
-                                gs.RoomDescriptions.Add(line);
+                                gs.ItemNames.Add(line);
                                 break;
                             case 6:
+                                gs.RoomDescriptions.Add(line);
+                                break;
+                            case 7:
                                 gs.RoomNames.Add(line);
                                 break;
                         }
@@ -133,6 +138,14 @@ namespace CastleGrimtol.Project
             bool playing = true;
             while (playing)
             {
+                if (CurrentRoom.Name == "Kitchen")
+                {
+                    CurrentPlayer.Health -= 10;
+                }
+                else if (CurrentRoom.Name == "Foyer")
+                {
+                    CurrentPlayer.Health -= 5;
+                }
                 Console.Clear();
                 Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                 Console.WriteLine("---------------------------------------------------------------------------------");
@@ -265,16 +278,16 @@ namespace CastleGrimtol.Project
             Console.WriteLine(CurrentRoom.Description);
             Console.WriteLine("---------------------------------------------------------------------------------");
             Console.WriteLine($"Used {itemName}");
-            Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
             for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
             {
                 if (CurrentPlayer.Inventory[i].Name.ToLower() == itemName)
                 {
                     CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
                     CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
-                    return;
                 }
             }
+            Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
+            return;
         }
 
         public void GoLeft()
@@ -406,17 +419,6 @@ namespace CastleGrimtol.Project
                                     Console.WriteLine($"{CurrentPlayer.Inventory[j].Name.ToLower()} | {CurrentPlayer.Inventory[j].Description} | {CurrentPlayer.Inventory[j].Damage}");
                                 }
                                 string weaponChoice = Console.ReadLine().ToLower();
-                                if (weaponChoice == "orb" && CurrentRoom.Enemies[i].Name == "The Reaper")
-                                {
-                                    Console.Clear();
-                                    Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
-                                    Console.WriteLine("---------------------------------------------------------------------------------");
-                                    Console.WriteLine(CurrentRoom.Description);
-                                    Console.WriteLine("---------------------------------------------------------------------------------");
-                                    Console.WriteLine("The orb magically defeats the reaper and he dissapears!");
-                                    CurrentRoom.Enemies[i].Health = 0;
-                                    break;
-                                }
                                 for (var k = 0; k < CurrentPlayer.Inventory.Count; k++)
                                 {
                                     if (CurrentPlayer.Inventory[k].Name.ToLower() == weaponChoice)
@@ -501,7 +503,7 @@ namespace CastleGrimtol.Project
                     {
                         for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
                         {
-                            Console.WriteLine(CurrentPlayer.Inventory[i].Name.ToLower());
+                            Console.WriteLine($"{CurrentPlayer.Inventory[i].Name.ToLower()} | {CurrentPlayer.Inventory[i].Description} | {CurrentPlayer.Inventory[i].Damage}");
 
                         }
                     }

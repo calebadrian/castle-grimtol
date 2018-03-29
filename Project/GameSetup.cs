@@ -11,6 +11,8 @@ namespace CastleGrimtol.Project{
 
         public List<string> EnemyNames { get; set; }
 
+        public List<int> ItemDamages { get; set; }
+
         public List<string> ItemNames { get; set; }
 
         public List<string> ItemDescriptions { get; set; }
@@ -23,6 +25,7 @@ namespace CastleGrimtol.Project{
             EnemyDamage = new List<int>();
             EnemyHealth = new List<int>();
             EnemyNames = new List<string>();
+            ItemDamages = new List<int>();
             ItemNames = new List<string>();
             ItemDescriptions = new List<string>();
             RoomNames = new List<string>();

@@ -19,6 +19,11 @@ namespace CastleGrimtol.Project
             switch (itemName)
             {
                 case "orb":
+                    if (Name == "Gardens")
+                    {
+                        Console.WriteLine("The orb magically defeats the reaper and he dissapears!");
+                        Enemies.RemoveAt(0);
+                    }
                     break;
                 case "burned bone":
                     break;
@@ -30,7 +35,7 @@ namespace CastleGrimtol.Project
                     if (Name == "Vault")
                     {
                         Console.WriteLine("You open the vault and see a rosary in front of you");
-                        Items.Add(new Item("Rosary", "A rosary that may have some sort of power"));
+                        Items.Add(new Item("Rosary", "A rosary that may have some sort of power", 0));
                     }
                     break;
                 case "rosary":
@@ -57,7 +62,7 @@ namespace CastleGrimtol.Project
             Enemies = new List<Enemy>();
             if (gs.ItemNames[roomCount] != "")
             {
-                Items.Add(new Item(gs.ItemNames[roomCount], gs.ItemDescriptions[roomCount]));
+                Items.Add(new Item(gs.ItemNames[roomCount], gs.ItemDescriptions[roomCount], gs.ItemDamages[roomCount]));
             }
             if (gs.EnemyNames[roomCount] != "")
             {
