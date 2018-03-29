@@ -251,23 +251,26 @@ namespace CastleGrimtol.Project
                 Console.WriteLine("You can't use that you must attack with it!");
                 return;
             }
-            Console.WriteLine($"Used {itemName.ToLower()}");
+            else if (itemName == "ham")
+            {
+                CurrentPlayer.Health += 25;
+            }
+            else if (itemName == "potion")
+            {
+                CurrentPlayer.Health += 50;
+            }
+            Console.Clear();
+            Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
+            Console.WriteLine("---------------------------------------------------------------------------------");
+            Console.WriteLine(CurrentRoom.Description);
+            Console.WriteLine("---------------------------------------------------------------------------------");
+            Console.WriteLine($"Used {itemName}");
+            Console.WriteLine($"What would you like to do {CurrentPlayer.Name}?");
             for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
             {
-                if (CurrentPlayer.Inventory[i].Name == itemName)
+                if (CurrentPlayer.Inventory[i].Name.ToLower() == itemName)
                 {
-                    if (itemName == "ham")
-                    {
-                        CurrentPlayer.Health += 25;
-                    }
-                    else if (itemName == "potion")
-                    {
-                        CurrentPlayer.Health += 50;
-                    }
-                    else
-                    {
-                        CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
-                    }
+                    CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
                     CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
                     return;
                 }
