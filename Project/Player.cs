@@ -25,8 +25,15 @@ namespace CastleGrimtol.Project
         public Player(string name)
         {
             Score = 0;
-            Health = 100;
             Name = name;
+            if (name == "TROGDOR")
+            {
+                Health = 10000000;
+            }
+            else
+            {
+                Health = 100;
+            }
             Inventory = new List<Item>();
         }
     }

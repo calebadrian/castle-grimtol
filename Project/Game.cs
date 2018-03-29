@@ -259,7 +259,7 @@ namespace CastleGrimtol.Project
 
         public void UseItem(string itemName)
         {
-            if (itemName == "sword" || itemName == "dagger" || itemName == "5 iron")
+            if (itemName == "sword" || itemName == "dagger" || itemName == "5 iron" || itemName =="greatsword")
             {
                 Console.WriteLine("You can't use that you must attack with it!");
                 return;
