@@ -18,7 +18,28 @@ namespace CastleGrimtol.Project
             string itemName = item.Name.ToLower();
             switch (itemName)
             {
-                case "sword":
+                case "orb":
+                    break;
+                case "burned bone":
+                    break;
+                case "candlestick":
+                    break;
+                case "flat basketball":
+                    break;
+                case "vault key":
+                    if (Name == "Vault")
+                    {
+                        Console.WriteLine("You open the vault and see a rosary in front of you");
+                        Items.Add(new Item("Rosary", "A rosary that may have some sort of power"));
+                    }
+                    break;
+                case "rosary":
+                    break;
+                case "beer":
+                    break;
+                case "pills":
+                    break;
+                case "pendant":
                     break;
             }
         }

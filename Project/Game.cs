@@ -160,7 +160,6 @@ namespace CastleGrimtol.Project
                 else if (CurrentPlayer.Health <= 0)
                 {
                     Console.Clear();
-                    Console.WriteLine($"{CurrentRoom.Enemies[0].Name} has Defeated you!");
                     Console.WriteLine("You Died!");
                     Console.WriteLine("Would you like to play again?");
                     string yorn = Console.ReadLine().ToLower();
@@ -247,12 +246,28 @@ namespace CastleGrimtol.Project
 
         public void UseItem(string itemName)
         {
+            if (itemName == "sword" || itemName == "dagger" || itemName == "5 iron")
+            {
+                Console.WriteLine("You can't use that you must attack with it!");
+                return;
+            }
             Console.WriteLine($"Used {itemName.ToLower()}");
             for (int i = 0; i < CurrentPlayer.Inventory.Count; i++)
             {
                 if (CurrentPlayer.Inventory[i].Name == itemName)
                 {
-                    CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
+                    if (itemName == "ham")
+                    {
+                        CurrentPlayer.Health += 25;
+                    }
+                    else if (itemName == "potion")
+                    {
+                        CurrentPlayer.Health += 50;
+                    }
+                    else
+                    {
+                        CurrentRoom.UseItem(CurrentPlayer.Inventory[i]);
+                    }
                     CurrentPlayer.RemoveItem(CurrentPlayer.Inventory[i]);
                     return;
                 }
@@ -367,7 +382,7 @@ namespace CastleGrimtol.Project
                 {
                     if (choice == "use " + CurrentPlayer.Inventory[i].Name.ToLower())
                     {
-                        UseItem(CurrentPlayer.Inventory[i].Name);
+                        UseItem(CurrentPlayer.Inventory[i].Name.ToLower());
                         return Action();
                     }
                 }
@@ -424,6 +439,10 @@ namespace CastleGrimtol.Project
                             {
                                 CurrentPlayer.Health -= CurrentRoom.Enemies[i].DamageDone;
                                 CurrentRoom.Enemies[i].Health -= 5;
+                                if (CurrentPlayer.Health <= 0)
+                                {
+                                    return false;
+                                }
                                 Console.Clear();
                                 Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                                 Console.WriteLine("---------------------------------------------------------------------------------");
