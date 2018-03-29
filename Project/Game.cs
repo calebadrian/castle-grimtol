@@ -1,6 +1,8 @@
 using System;
 using System.IO;
 using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace CastleGrimtol.Project
 {
@@ -259,7 +261,7 @@ namespace CastleGrimtol.Project
 
         public void UseItem(string itemName)
         {
-            if (itemName == "sword" || itemName == "dagger" || itemName == "5 iron" || itemName =="greatsword")
+            if (itemName == "sword" || itemName == "dagger" || itemName == "5 iron" || itemName == "greatsword")
             {
                 Console.WriteLine("You can't use that you must attack with it!");
                 return;
@@ -429,6 +431,10 @@ namespace CastleGrimtol.Project
                                         {
                                             return false;
                                         }
+                                        Console.BackgroundColor = ConsoleColor.DarkRed;
+                                        Console.Clear();
+                                        Thread.Sleep(50);
+                                        Console.BackgroundColor = ConsoleColor.Black;
                                         Console.Clear();
                                         Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                                         Console.WriteLine("---------------------------------------------------------------------------------");
