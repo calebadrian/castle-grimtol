@@ -75,13 +75,13 @@ namespace CastleGrimtol.Project
             bool valid = false;
             while (!valid)
             {
-                Console.WriteLine($"Is the Castle 5x5, 6x6, 7x7, or 8x8 {player.Name}?");
-                Console.WriteLine("Just type 5, 6, 7, or 8 to choose!");
+                Console.WriteLine($"Is the Castle 5x5, 6x6, or 7x7{player.Name}?");
+                Console.WriteLine("Just type 5, 6, or 7 to choose!");
                 string roomCountString = Console.ReadLine();
                 int roomCount;
                 if (Int32.TryParse(roomCountString, out roomCount))
                 {
-                    if (roomCount < 5 || roomCount > 8)
+                    if (roomCount < 5 || roomCount > 7)
                     {
                         continue;
                     }
@@ -149,6 +149,13 @@ namespace CastleGrimtol.Project
                     CurrentPlayer.Health -= 5;
                 }
                 Console.Clear();
+                if (CurrentPlayer.Name == "TROGDOR")
+                {
+                    List<int> indexesCurrent = IndexOfCurrentRoom();
+                    Console.WriteLine($"Current Room Index: {indexesCurrent[0]}, {indexesCurrent[1]}");
+                    List<int> indexesEnding = IndexOfEndingRoom();
+                    Console.WriteLine($"Ending Room Index: {indexesEnding[0]}, {indexesEnding[1]}");
+                }
                 Console.WriteLine($"Name: {CurrentPlayer.Name} | Health: {CurrentPlayer.Health}");
                 Console.WriteLine("---------------------------------------------------------------------------------");
                 Console.WriteLine(CurrentRoom.Description);
@@ -200,13 +207,13 @@ namespace CastleGrimtol.Project
             while (!valid)
             {
                 Console.Clear();
-                Console.WriteLine($"Is the Castle 5x5, 6x6, 7x7, or 8x8 {CurrentPlayer.Name}?");
-                Console.WriteLine("Just type 5, 6, 7, or 8 to choose!");
+                Console.WriteLine($"Is the Castle 5x5, 6x6, or 7x7 {CurrentPlayer.Name}?");
+                Console.WriteLine("Just type 5, 6, or 7 to choose!");
                 string roomCountString = Console.ReadLine();
                 int roomCount;
                 if (Int32.TryParse(roomCountString, out roomCount))
                 {
-                    if (roomCount < 5 || roomCount > 8)
+                    if (roomCount < 5 || roomCount > 7)
                     {
                         continue;
                     }
@@ -344,6 +351,24 @@ namespace CastleGrimtol.Project
                 for (int j = 0; j < Rooms.GetLength(1); j++)
                 {
                     if (Rooms[i, j].Equals(CurrentRoom))
+                    {
+                        temp.Add(i);
+                        temp.Add(j);
+                        return temp;
+                    }
+                }
+            }
+            return temp;
+        }
+
+        public List<int> IndexOfEndingRoom()
+        {
+            List<int> temp = new List<int>();
+            for (int i = 0; i < Rooms.GetLength(0); i++)
+            {
+                for (int j = 0; j < Rooms.GetLength(1); j++)
+                {
+                    if (Rooms[i, j].Equals(EndingRoom))
                     {
                         temp.Add(i);
                         temp.Add(j);
